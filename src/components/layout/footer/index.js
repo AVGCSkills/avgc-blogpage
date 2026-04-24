@@ -34,16 +34,16 @@ export default function Footer() {
             {/* Column 1 */}
             <div className="flex flex-col gap-2">
               <p className="font-bold mb-2">Explore</p>
-              <Link href="#" className="hover:underline">
+              <Link href="/news" className="hover:underline">
                 News
               </Link>
-              <Link href="#" className="hover:underline">
+              <Link href="/industries" className="hover:underline">
                 Industries
               </Link>
-              <Link href="#" className="hover:underline">
+              <Link href="/education" className="hover:underline">
                 Education
               </Link>
-              <Link href="#" className="hover:underline">
+              <Link href="/events" className="hover:underline">
                 Events
               </Link>
             </div>
@@ -51,13 +51,13 @@ export default function Footer() {
             {/* Column 2 */}
             <div className="flex flex-col gap-2">
               <p className="font-bold mb-2">Company</p>
-              <Link href="#" className="hover:underline">
+              <Link href="/about" className="hover:underline">
                 About
               </Link>
-              <Link href="#" className="hover:underline">
+              <Link href="/contact" className="hover:underline">
                 Contact
               </Link>
-              <Link href="#" className="hover:underline">
+              <Link href="/privacy" className="hover:underline">
                 Privacy Policy
               </Link>
             </div>
@@ -65,13 +65,19 @@ export default function Footer() {
             {/* Column 3 */}
             <div className="flex flex-col gap-2">
               <p className="font-bold mb-2">Social</p>
-              <Link href="#" className="hover:underline">
+              <Link
+                href="https://www.instagram.com/avgc_skills_studios/"
+                className="hover:underline">
                 Instagram
               </Link>
-              <Link href="#" className="hover:underline">
-                Twitter
+              <Link
+                href="https://www.instagram.com/avgc_skills_studios/"
+                className="hover:underline">
+                Facebook
               </Link>
-              <Link href="#" className="hover:underline">
+              <Link
+                href="https://www.linkedin.com/company/avgc-skill-pvt-ltd"
+                className="hover:underline">
                 LinkedIn
               </Link>
             </div>

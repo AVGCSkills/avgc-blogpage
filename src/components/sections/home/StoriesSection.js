@@ -1,6 +1,11 @@
+"use client";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
-export default function StoriesSection() {
+export default function StoriesSection({ data }) {
+  const tabs = ["NEWS", "INDUSTRIES", "EDUCATION", "EVENTS"];
+  const [active, setActive] = useState(0);
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -16,16 +21,14 @@ export default function StoriesSection() {
 
           {/* TAGS */}
           <div className="flex flex-wrap gap-2 mb-6">
-            {[
-              "ARTIFICIAL INTELLIGENCE",
-              "BRANDING",
-              "THE FUTURE OF WORK",
-              "HOUSING MARKET",
-            ].map((tag, i) => (
+            {tabs.map((tag, i) => (
               <span
                 key={i}
-                className={`px-4 py-1 rounded-full text-xs font-bold border ${
-                  i === 0 ? "bg-black text-white" : "text-black"
+                onClick={() => {
+                  setActive(i);
+                }}
+                className={`px-4 py-1 rounded-full text-xs font-bold border cursor-pointer ${
+                  i === active ? "bg-black text-white" : "text-black"
                 }`}>
                 {tag}
               </span>
@@ -34,23 +37,22 @@ export default function StoriesSection() {
 
           {/* ARTICLES GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i}>
-                <p className="text-xs font-bold mb-1">NEWS</p>
+            {data[tabs[active].toLowerCase()].map((el, i) => (
+              <Link href={`/${el.category.toLowerCase()}/${el.slug}`} key={i}>
+                <p className="text-xs font-bold mb-1">{tabs[active]}</p>
 
                 <Image
-                  src="/card.jpg"
+                  src={el.image}
                   width={400}
                   height={200}
                   alt="story"
-                  className="w-full h-[160px] object-cover"
+                  className="w-full aspect-[16/9] object-cover"
                 />
 
                 <h3 className="font-bold text-sm mt-2 leading-tight">
-                  Housing market rent incentives hit a 12-year record as demand
-                  increases
+                  {el.title}
                 </h3>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

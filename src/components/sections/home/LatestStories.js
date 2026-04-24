@@ -1,40 +1,35 @@
 import Image from "next/image";
+import Link from "next/link";
 
-export default function LatestStories() {
+export default function LatestStories({ data, text }) {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div className="lg:col-span-9">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-6 h-6 border rounded-full flex items-center justify-center text-xs">
+            <div className="w-6 h-6 border rounded-full flex items-center justify-center text-xs text-black">
               ◎
             </div>
-            <h2 className="text-xl font-extrabold">Latest Stories</h2>
+            <h2 className="text-xl font-extrabold text-black  ">{text}</h2>
           </div>
 
           {/* ARTICLES GRID */}
           <div className="flex flex-col ">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="border-t  border-gray-600">
-                <p className="text-md font-bold mb-1 text-gray-500 mt-4">
-                  MOST INNOVATIVE COMPANIES
-                </p>
+            {data.map((el, i) => (
+              <Link
+                href={`/${el.category.toLowerCase()}/${el.slug}`}
+                key={i}
+                className="border-t  border-gray-600">
                 <div className="h-56 w-full  flex justify-between py-3">
                   <div className="h-full w-[62%] ">
-                    <h3 className="text-2xl font-bold">
-                      How Reddit CEO Steve Huffman got the upper hand with AI
-                    </h3>
-                    <p className="text-sm text-gray-400">
-                      Reddit isn't just striking deals with AI behemoths like
-                      OpenAI and Google. It's smartly using AI itself to serve
-                      users and marketers.
-                    </p>
+                    <h3 className="text-2xl font-bold">{el.title}</h3>
+                    <p className="text-sm text-gray-400">{el.description}</p>
                   </div>
-                  <div className="h-full w-[35%] relative ">
-                    <Image alt="random" fill src="/card.jpg" />
+                  <div className="aspect-[16/9] w-[35%] relative ">
+                    <Image alt="random" fill src={el.image} />
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

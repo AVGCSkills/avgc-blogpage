@@ -39,7 +39,7 @@ export default function Header() {
               (item, index) => (
                 <Link
                   key={index}
-                  href="#"
+                  href={`/${item.toLowerCase()}`}
                   className="px-6 py-2 border border-black text-sm font-medium bg-white hover:bg-black hover:text-white transition">
                   {item}
                 </Link>
