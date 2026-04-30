@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 function LatestTopics({ data }) {
-  console.log(data);
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 mb-6 text-sm">
       <span className="text-orange-500 font-bold">Latest Topics</span>

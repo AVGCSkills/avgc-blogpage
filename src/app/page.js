@@ -128,31 +128,6 @@ export default async function Home() {
           </article>
 
           {/* RIGHT COLUMN */}
-          {/* <aside className="lg:col-span-3">
-            <div className="border rounded-md">
-              <div className="p-3 border-b font-bold text-sm bg-gray-50 rounded-t-md">
-                Most Read ↓
-              </div>
-
-              {[1, 2, 3, 4].map((num) => (
-                <article
-                  key={num}
-                  className="flex gap-3 p-3 border-b last:border-none hover:bg-gray-50 transition-colors">
-                  <span className="text-lg font-extrabold text-gray-400">
-                    {num}
-                  </span>
-                  <div>
-                    <p className="text-xs font-bold text-gray-500">NEWS</p>
-                    <Link href="#" className="hover:underline">
-                      <h3 className="text-sm font-semibold leading-tight mt-1">
-                        Sample headline goes here for trending article
-                      </h3>
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </aside> */}
         </div>
 
         {/* BOTTOM GRID */}

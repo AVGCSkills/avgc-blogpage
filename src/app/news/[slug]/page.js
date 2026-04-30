@@ -4,6 +4,8 @@ import { getBlogBySlug } from "@/utils/getBlogBySlug";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import TTSPlayer from "@/components/ui/TTSPlayer";
+import AdBanner from "@/components/ui/AdBanner"; // <-- Imported AdBanner
 
 // 1. Dynamic Metadata Generation
 // Next.js will call this function BEFORE rendering the page to inject the correct <head> tags
@@ -87,6 +89,18 @@ const renderBlock = (block, index) => {
   }
 };
 
+// 2. Added Helper function to extract plain text for the TTS API
+const extractPlainText = (blocks) => {
+  if (!blocks || blocks.length === 0) return "";
+  return blocks
+    .map((block) => {
+      if (!block.content) return "";
+      // Join inline text items within the block
+      return block.content.map((inline) => inline.text).join("");
+    })
+    .join(". "); // Join paragraphs/headings with periods for better audio pacing
+};
+
 // --- Main Page Component ---
 export default async function ArticlePage({ params }) {
   const { slug } = await params;
@@ -108,7 +122,11 @@ export default async function ArticlePage({ params }) {
 
   const contentBlocks = article.payload.mainContent?.content || [];
 
-  // 2. Dynamic Article Schema (JSON-LD)
+  // 3. Generate the full text string for the audio player
+  const plainTextContent = extractPlainText(contentBlocks);
+  const fullAudioText = `${article.base.title}. ${article.base.description}. ${plainTextContent}`;
+
+  // Dynamic Article Schema (JSON-LD)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
@@ -134,13 +152,19 @@ export default async function ArticlePage({ params }) {
       />
       <Header />
       <div className="max-w-7xl mx-auto px-4 py-10 font-sans text-gray-900">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Top Ad Placement - Full Width */}
+        <div className="w-full bg-gray-50 flex flex-col items-center justify-center p-4 mb-10 min-h-[100px] md:min-h-[150px]">
+          <AdBanner dataAdSlot="5288518138" dataAdFormat="horizontal" />
+        </div>
+
+        {/* Added "relative" to the grid container for sticky positioning context */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative">
           {/* Main Article Content */}
           <article className="lg:col-span-8 flex flex-col">
             {/* Metadata & Headers */}
             <header className="mb-6">
               <div className="text-xs font-bold tracking-widest text-gray-500 uppercase mb-4">
-                {/* 3. Semantic Time Tag */}
+                {/* Semantic Time Tag */}
                 <time dateTime={article.base.createdAt}>{formatted}</time>
                 <span className="mx-2">|</span> {article.payload.category}
               </div>
@@ -153,6 +177,9 @@ export default async function ArticlePage({ params }) {
                 {article.base.description}
               </p>
             </header>
+
+            {/* 4. Insert the TTS Player here */}
+            <TTSPlayer text={fullAudioText} />
 
             {/* Hero Image */}
             <figure className="mb-8">
@@ -173,32 +200,16 @@ export default async function ArticlePage({ params }) {
               {contentBlocks.map((block, index) => renderBlock(block, index))}
             </div>
           </article>
-          {/* <aside className="lg:col-span-4 flex flex-col gap-12 pt-4">
-            <div className="w-full bg-[#c084fc] flex flex-col items-center justify-center text-center p-6 min-h-[500px]">
-              <div className="text-xs mb-4 uppercase tracking-widest text-black/50">
-                Advertisement
-              </div>
-              <h3 className="font-serif text-3xl font-black text-black leading-none mb-2">
-                BRANDS
-              </h3>
-              <h3 className="font-serif text-xl font-bold text-black mb-8">
-                THAT MATTER
-              </h3>
-              <div className="text-xl font-black tracking-widest mb-2">
-                CALL FOR ENTRIES
-              </div>
-              <p className="text-sm tracking-widest mb-8">
-                SHOWCASE YOUR IMPACT
-              </p>
-              <button className="bg-blue-600 text-white font-bold text-xs px-8 py-3 uppercase tracking-wider mb-4">
-                Apply Now
-              </button>
-              <div className="text-[10px] tracking-widest uppercase">
-                Final Deadline: May 15
-              </div>
+
+          {/* Sidebar / Aside (Uncommented and added h-full for sticky bounds) */}
+          <aside className="lg:col-span-4 flex flex-col gap-12 pt-4 h-full">
+            {/* Ad Placement 1 - Sticky with z-10 */}
+            <div className="sticky top-24 z-10 w-full bg-gray-50 flex flex-col items-center justify-center p-6 min-h-[300px] border border-gray-100 shadow-sm">
+              <AdBanner dataAdSlot="5148917338" />
             </div>
 
-            <div>
+            {/* Featured Video - Sticky with z-20 (Added bg-white so it covers the ad seamlessly) */}
+            <div className="sticky top-24 z-20 w-full bg-white py-2">
               <h3 className="text-sm font-black tracking-widest uppercase border-b-2 border-black pb-2 mb-4">
                 Featured Video
               </h3>
@@ -221,29 +232,11 @@ export default async function ArticlePage({ params }) {
               </h4>
             </div>
 
-            <div className="w-full bg-gray-50 border border-gray-200 flex flex-col items-center justify-center p-6 min-h-[400px]">
-              <div className="text-[10px] uppercase tracking-widest text-gray-400 mb-4">
-                Advertisement
-              </div>
-              <div className="relative w-full aspect-video mb-6">
-                <Image
-                  src="/api/placeholder/400/225"
-                  alt="Innovation Festival Graphic"
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                />
-              </div>
-              <div className="font-black text-xl tracking-widest uppercase text-center leading-none mb-4">
-                Innovation
-                <br />
-                Festival
-              </div>
-              <div className="text-xs font-bold tracking-widest">
-                SEPT 14-17 NYC
-              </div>
+            {/* Ad Placement 2 - Sticky with z-30 */}
+            <div className="sticky top-24 z-30 w-full bg-gray-50 flex flex-col items-center justify-center p-6 min-h-[300px] border border-gray-100 shadow-sm">
+              <AdBanner dataAdSlot="2219590954" />
             </div>
-          </aside> */}
+          </aside>
         </div>
       </div>
       <Footer />
